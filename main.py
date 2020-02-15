@@ -13,6 +13,7 @@ from functions import *
 from imagepreprocess import *
 from model_init import *
 from src.representation import *
+from CUB import BirdDataset
 import torch
 import torch.nn as nn
 import torch.nn.parallel
@@ -192,8 +193,8 @@ def main():
     valdir = os.path.join(args.data, 'val')
     train_transforms, val_transforms, evaluate_transforms = preprocess_strategy(args.benchmark)
 
-    train_dataset = datasets.ImageFolder(
-        traindir,
+    train_dataset = BirdDataset(
+        'train',
         train_transforms)
 
     if args.distributed:
@@ -206,14 +207,14 @@ def main():
         num_workers=args.workers, pin_memory=True, sampler=train_sampler)
 
     val_loader = torch.utils.data.DataLoader(
-        datasets.ImageFolder(valdir, val_transforms),
+        BirdDataset('val', val_transforms),
         batch_size=args.batch_size, shuffle=False,
         num_workers=args.workers, pin_memory=True)
 
     ## init evaluation data loader
     if evaluate_transforms is not None:
         evaluate_loader = torch.utils.data.DataLoader(
-            datasets.ImageFolder(valdir, evaluate_transforms),
+            BirdDataset('test', evaluate_transforms),
             batch_size=args.batch_size, shuffle=False,
             num_workers=args.workers, pin_memory=True)
 
