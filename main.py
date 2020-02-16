@@ -194,8 +194,9 @@ def main():
     train_transforms, val_transforms, evaluate_transforms = preprocess_strategy(args.benchmark)
 
     train_dataset = BirdDataset(
-        'train',
-        train_transforms)
+        train_transforms,
+        'train'
+        )
 
     if args.distributed:
         train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset)
@@ -207,14 +208,14 @@ def main():
         num_workers=args.workers, pin_memory=True, sampler=train_sampler)
 
     val_loader = torch.utils.data.DataLoader(
-        BirdDataset('val', val_transforms),
+        BirdDataset(val_transforms, 'val'),
         batch_size=args.batch_size, shuffle=False,
         num_workers=args.workers, pin_memory=True)
 
     ## init evaluation data loader
     if evaluate_transforms is not None:
         evaluate_loader = torch.utils.data.DataLoader(
-            BirdDataset('test', evaluate_transforms),
+            BirdDataset(evaluate_transforms, 'test'),
             batch_size=args.batch_size, shuffle=False,
             num_workers=args.workers, pin_memory=True)
 
