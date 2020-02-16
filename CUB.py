@@ -7,7 +7,7 @@ import pdb
 from PIL import Image
 from torch.utils.data import Dataset
 
-DATAPATH = '/content/gdrive/My Drive/CUB-200-2011'
+DATAPATH = '/content/gdrive/My Drive/CUB_200_2011'
 image_path = {}
 image_label = {}
 
